@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Загружаем локальный HTML файл
-        webView.loadUrl("file:///android_asset/index.html");
+        // Загружаем продакшн веб-приложение (идентично оригиналу)
+        webView.loadUrl("https://sepo-certification-api.onrender.com");
     }
 
     @Override
