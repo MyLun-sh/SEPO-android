@@ -2074,8 +2074,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/certs', express.static(path.join(__dirname, 'certs')))
 app.use('/pictures', express.static(path.join(__dirname, 'pictures')))
 
-// запуск сервера
-const server = app.listen(PORT, () => console.log(`Server listening at http://localhost:${PORT}`))
+// запуск сервера (єдиний виклик) і прив'язка до 0.0.0.0 для доступу ззовні
+const server = app.listen(PORT, '0.0.0.0', () => console.log(`Server listening at http://0.0.0.0:${PORT}`))
 
 server.on('error', err => {
 	if (err.code === 'EADDRINUSE') {
@@ -2685,8 +2685,3 @@ app.put('/api/users/:id/role', authMiddleware, roleCheck(['admin']), (req, res) 
 
 // SPA fallback - має бути в кінці, після всіх API endpoints
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')))
-
-// Start server and bind to 0.0.0.0 to allow LAN access from devices
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`)
-})
