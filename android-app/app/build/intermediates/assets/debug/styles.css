@@ -1,0 +1,139 @@
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --accent:#0b5fff;
+  --muted:#6b7280;
+  --glass: rgba(255,255,255,0.85);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:#0f172a;
+  background: linear-gradient(180deg,#eef2ff,#f5f7fb);
+  min-height:100vh;
+}
+/* Глобальний масштабований обгортка для відповідності бажаному візуальному розміру */
+.ui-scale-85{transform:scale(.85);transform-origin: top center}
+@media (max-width:900px){.ui-scale-85{transform:none}}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 20px;
+  background:var(--glass);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(2,6,23,0.04);
+}
+
+.brand{font-weight:800;color:var(--accent);font-size:18px}
+.user-area{display:flex;gap:10px;align-items:center}
+.wrap{display:flex;max-width:1100px;margin:24px auto;gap:18px;padding:0 12px}
+/* .app-area{display:none} - прибираємо це правило, так як воно конфліктує з JavaScript */
+.left{width:220px;display:flex;flex-direction:column;gap:12px}
+.main{flex:1}
+.card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 30px rgba(15,23,42,0.06)}
+.btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700;box-shadow:0 6px 18px rgba(11,95,255,0.08)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(11,95,255,0.12)}
+.btn.remove{background-color:#dc3545}
+.muted{color:var(--muted);font-size:13px}
+.centered-number{font-weight:900;font-size:22px;text-align:center;margin-bottom:6px}
+.certificate-block{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.state{background:#eef6ff;color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:700;display:inline-block}
+.list-item{display:flex;justify-content:space-between;padding:14px;border-radius:10px;border:1px dashed #eef6ff;margin-bottom:12px;align-items:center}
+.list-item .title{font-weight:800;margin-bottom:6px}
+.stepper{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.step{padding:6px 10px;border-radius:8px;background:#f8fafc;color:var(--muted);font-weight:700;border:1px solid #eef6ff}
+.step.current{background:var(--accent);color:#fff}
+.actions{display:flex;gap:10px;margin-top:12px;flex-direction:column;align-items:stretch}
+.detail-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #eef6ff;padding-bottom:12px;margin-bottom:12px}
+input[type="text"], input[type="email"], input[type="password"], select, input[type="date"]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #e6edf8;margin:6px 0 12px 0;background:#fbfdff}
+
+/* Стилі для textarea */
+textarea {
+	width: 100%;
+	padding: 12px 14px;
+	border-radius: 8px;
+	border: 1px solid #e6edf8;
+	margin: 6px 0 12px 0;
+	background: #fbfdff;
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.5;
+	resize: vertical;
+	min-height: 80px;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(11, 95, 255, 0.1);
+}
+
+textarea::placeholder {
+	color: #9ca3af;
+	font-style: italic;
+}
+.left .btn{width:100%;padding:12px;border-radius:999px;text-align:center;font-weight:800}
+@media (max-width:800px){.wrap{flex-direction:column;padding:12px}.left{width:100%;display:flex;flex-wrap:wrap;gap:8px}}
+.pre{background:#f8fafc;padding:10px;border-radius:8px;max-height:300px;overflow:auto}
+.footer{text-align:center;padding:16px;color:var(--muted);margin-top:16px}
+
+/* За замовчуванням показуємо форму входу */
+#login-card{display:block}
+/* .app-area{display:none} - прибираємо це правило, так як воно конфліктує з JavaScript */
+
+/* Форма групи */
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: 600;
+	color: #374151;
+}
+
+/* Переконаємося, що app-area правильно відображається */
+.app-area {
+	display: none;
+}
+
+/* Мобильные стили для Android */
+@media (max-width: 768px) {
+	.ui-scale-85 {
+		transform: none;
+	}
+	
+	.wrap {
+		flex-direction: column;
+		padding: 8px;
+		margin: 12px auto;
+	}
+	
+	.left {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	
+	.left .btn {
+		flex: 1;
+		min-width: 120px;
+	}
+	
+	.top {
+		padding: 10px 12px;
+	}
+	
+	.brand {
+		font-size: 16px;
+	}
+	
+	.card {
+		padding: 12px;
+	}
+}

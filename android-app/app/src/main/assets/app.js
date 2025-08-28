@@ -31,22 +31,11 @@ const statusTranslations = {
 }
 
 // API endpoints (для локального сервера)
-let CURRENT_API_BASE = null
-try { const saved = localStorage.getItem('apiBaseUrl'); if (saved) CURRENT_API_BASE = saved.replace(/\/$/, '') } catch (_) {}
+const API_BASE = 'https://sepo-certification-api.onrender.com'
 
-function candidateApiBases() {
-	const list = []
-	if (CURRENT_API_BASE) list.push(CURRENT_API_BASE)
-	list.push('http://10.0.2.2:3000')
-	list.push('http://127.0.0.1:3000')
-	list.push('http://localhost:3000')
-	return list
-}
-
-function buildUrl(pathOrUrl, base) {
+function buildUrl(pathOrUrl) {
 	if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl
-	const baseUrl = (base || CURRENT_API_BASE || '').replace(/\/$/, '')
-	return `${baseUrl}${pathOrUrl}`
+	return `${API_BASE}${pathOrUrl}`
 }
 
 const API = {
@@ -155,35 +144,13 @@ const apiRequest = async (pathOrUrl, options = {}) => {
         ...options
     }
     if (token) config.headers.Authorization = `Bearer ${token}`
-
-    const bases = candidateApiBases()
-    let lastError = null
-    for (let i = 0; i < bases.length; i++) {
-        const base = bases[i]
-        const url = buildUrl(pathOrUrl, base)
-        try {
-            const response = await fetch(url, config)
-            // Сохраняем удачную базу (даже если статус не ok — сеть достигнута)
-            if (!CURRENT_API_BASE) {
-                CURRENT_API_BASE = base
-                try { localStorage.setItem('apiBaseUrl', CURRENT_API_BASE) } catch (_) {}
-            }
-            if (!response.ok) {
-                const text = await response.text().catch(() => '')
-                throw new Error(`HTTP ${response.status} ${text}`)
-            }
-            return await response.json()
-        } catch (err) {
-            lastError = err
-            // Пробуем следующую базу только при сетевой ошибке
-            if (String(err && err.message || '').startsWith('HTTP')) {
-                break
-            }
-        }
+    const url = buildUrl(pathOrUrl)
+    const response = await fetch(url, config)
+    if (!response.ok) {
+        const text = await response.text().catch(() => '')
+        throw new Error(`HTTP ${response.status} ${text}`)
     }
-    console.error('API request failed on all bases:', lastError)
-    showNotification('Помилка з'єднання з сервером', 'error')
-    throw lastError || new Error('Network error')
+    return await response.json()
 }
 
 // Авторизация

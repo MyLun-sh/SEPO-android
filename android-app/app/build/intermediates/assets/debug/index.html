@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SEPO — Система сертифікації</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="shortcut icon" type="image/png" href="favicon.png">
+	<link rel="apple-touch-icon" href="favicon.png">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="ui-scale-85">
+	<!-- Вхід -->
+	<div id="login-card" class="card" style="max-width:400px;margin:100px auto">
+		<h2>Вхід в систему</h2>
+		<form id="login-form">
+			<div class="form-group">
+				<label>Email:</label>
+				<input type="email" id="email" required>
+			</div>
+			<div class="form-group">
+				<label>Пароль:</label>
+				<input type="password" id="password" required>
+			</div>
+			<button type="submit" class="btn">Увійти</button>
+		</form>
+	</div>
+
+	<!-- Область додатку -->
+	<div id="app-area" class="app-area">
+		<!-- Верхня панель -->
+		<div class="top">
+			<div class="brand">SEPO — Система сертифікації</div>
+			<div class="user-area">
+				<span id="user-info"></span>
+				<button id="logout" class="btn ghost">Вийти</button>
+			</div>
+		</div>
+
+		<div class="wrap">
+			<!-- Ліва навігація -->
+			<div class="left">
+				<button id="nav-create" class="btn">Створити заявку</button>
+				<button id="nav-my" class="btn">Мої заявки</button>
+				<button id="nav-all" class="btn">Усі заявки</button>
+                <button id="nav-ins" class="btn">Інспекції</button>
+                <button id="nav-ins-history" class="btn">Історія інспекцій</button>
+				<button id="nav-ins-pending" class="btn">Заявки на інспекцію</button>
+				<button id="nav-ins-planned" class="btn">Заплановані інспекції</button>
+				<button id="nav-logs" class="btn">Журнал дій</button>
+				<button id="nav-users" class="btn">Користувачі</button>
+			</div>
+
+			<!-- Основний контент -->
+			<div class="main">
+				<!-- Створення заявки -->
+				<div id="create-card" class="card">
+					<h3>Створити нову заявку</h3>
+					<form id="create-form">
+						<div class="form-group">
+							<label>Назва продукції:</label>
+							<input type="text" id="productName" required>
+						</div>
+						<div class="form-group">
+							<label>Тип продукції:</label>
+							<select id="productType" required>
+								<option value="одиничний">Одиничний виріб</option>
+								<option value="партія">Партія продукції</option>
+								<option value="серійна">Серійна продукція</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Хто ви:</label>
+							<select id="applicantType" required onchange="toggleOtherField()">
+								<option value="виробник">Виробник</option>
+								<option value="постачальник">Постачальник</option>
+								<option value="імпортер">Імпортер</option>
+								<option value="експортер">Експортер</option>
+								<option value="інше">Інше</option>
+							</select>
+						</div>
+						<div class="form-group" id="otherField" style="display: none;">
+							<label>Укажіть хто ви:</label>
+							<input type="text" id="otherApplicantType" placeholder="Введіть ваш тип">
+						</div>
+						<button type="submit" class="btn">Створити заявку</button>
+					</form>
+				</div>
+
+				<!-- Список заявок -->
+				<div id="list-card" class="card">
+					<h3>Заявки</h3>
+					<div id="apps"></div>
+				</div>
+
+				<!-- Деталі заявки -->
+				<div id="detail-card" class="card">
+					<div class="detail-top">
+						<div id="app-number"></div>
+						<div class="status" id="app-status"></div>
+					</div>
+					<div id="app-details"></div>
+				</div>
+
+				<!-- Інспекції -->
+				<div id="inspections-card" class="card">
+					<h3>Інспекції</h3>
+					<div id="inspections"></div>
+				</div>
+
+				<!-- Історія інспекцій -->
+				<div id="inspections-history-card" class="card">
+					<h3>Історія інспекцій</h3>
+					<div id="inspections-history"></div>
+				</div>
+
+				<!-- Заявки на інспекцію -->
+				<div id="inspections-pending-card" class="card">
+					<h3>Заявки на інспекцію</h3>
+					<div id="inspections-pending"></div>
+				</div>
+
+				<!-- Заплановані інспекції -->
+				<div id="inspections-planned-card" class="card">
+					<h3>Заплановані інспекції</h3>
+					<div id="inspections-planned"></div>
+				</div>
+
+				<!-- Журнал дій -->
+				<div id="logs-card" class="card">
+					<h3>Журнал дій</h3>
+					<div id="logs"></div>
+				</div>
+
+				<!-- Користувачі -->
+				<div id="users-card" class="card">
+					<h3>Користувачі</h3>
+					<div id="users"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>
