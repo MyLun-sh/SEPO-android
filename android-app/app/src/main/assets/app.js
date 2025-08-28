@@ -155,6 +155,12 @@ const apiRequest = async (pathOrUrl, options = {}) => {
 
 // Авторизация
 const login = async (email, password) => {
+    const submitBtn = document.querySelector('#login-form button[type="submit"]')
+    const prevText = submitBtn ? submitBtn.textContent : ''
+    if (submitBtn) {
+        submitBtn.disabled = true
+        submitBtn.textContent = 'Вхід...'
+    }
     try {
         const response = await apiRequest(API.login, {
             method: 'POST',
@@ -173,6 +179,11 @@ const login = async (email, password) => {
         }
     } catch (error) {
         showNotification('Помилка входу в систему', 'error')
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false
+            submitBtn.textContent = prevText
+        }
     }
 }
 
@@ -196,9 +207,71 @@ const updateUserInfo = () => {
 }
 
 // Показ основного приложения
+const setRoleBasedVisibility = () => {
+    const role = currentUser?.role || 'applicant'
+
+    const controls = {
+        create: $('nav-create'),
+        my: $('nav-my'),
+        all: $('nav-all'),
+        ins: $('nav-ins'),
+        insHistory: $('nav-ins-history'),
+        insPending: $('nav-ins-pending'),
+        insPlanned: $('nav-ins-planned'),
+        logs: $('nav-logs'),
+        users: $('nav-users'),
+    }
+
+    const cards = {
+        create: $('create-card'),
+        list: $('list-card'),
+        detail: $('detail-card'),
+        ins: $('inspections-card'),
+        insHistory: $('inspections-history-card'),
+        insPending: $('inspections-pending-card'),
+        insPlanned: $('inspections-planned-card'),
+        logs: $('logs-card'),
+        users: $('users-card'),
+    }
+
+    const hideAll = () => {
+        Object.values(controls).forEach(hide)
+        Object.values(cards).forEach(hide)
+    }
+
+    hideAll()
+
+    if (role === 'applicant') {
+        show(controls.create)
+        show(controls.my)
+        show(cards.create)
+        show(cards.list)
+    } else if (role === 'inspector') {
+        show(controls.ins)
+        show(controls.insHistory)
+        show(controls.insPending)
+        show(controls.insPlanned)
+        show(cards.ins)
+        show(cards.insHistory)
+        show(cards.insPending)
+        show(cards.insPlanned)
+    } else if (role === 'operator') {
+        show(controls.all)
+        show(cards.list)
+    } else if (role === 'admin') {
+        Object.values(controls).forEach(show)
+        Object.values(cards).forEach(show)
+    } else {
+        // fallback: показываем только список
+        show(controls.my)
+        show(cards.list)
+    }
+}
+
 const showApp = () => {
     hide($('login-card'))
     show($('app-area'))
+    setRoleBasedVisibility()
     loadApplications()
 }
 
