@@ -135,7 +135,7 @@ const showNotification = (message, type = 'info') => {
 }
 
 // HTTP запросы
-const apiRequest = async (pathOrUrl, options = {}) => {
+const apiRequest = async (pathOrUrl, options = {}, retryCount = 2) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -145,12 +145,22 @@ const apiRequest = async (pathOrUrl, options = {}) => {
     }
     if (token) config.headers.Authorization = `Bearer ${token}`
     const url = buildUrl(pathOrUrl)
-    const response = await fetch(url, config)
-    if (!response.ok) {
-        const text = await response.text().catch(() => '')
-        throw new Error(`HTTP ${response.status} ${text}`)
+
+    try {
+        const response = await fetch(url, config)
+        if (!response.ok) {
+            const text = await response.text().catch(() => '')
+            const message = `HTTP ${response.status} at ${url}${text ? ' — ' + text : ''}`
+            throw new Error(message)
+        }
+        return await response.json()
+    } catch (err) {
+        if (retryCount > 0) {
+            await new Promise(r => setTimeout(r, 800))
+            return apiRequest(pathOrUrl, options, retryCount - 1)
+        }
+        throw err
     }
-    return await response.json()
 }
 
 // Авторизация
@@ -281,7 +291,8 @@ const loadApplications = async () => {
         const applications = await apiRequest(API.apps)
         displayApplications(applications)
     } catch (error) {
-        showNotification('Помилка завантаження заявок', 'error')
+        console.error('loadApplications error:', error)
+        showNotification(`Помилка завантаження заявок: ${error.message || error}`, 'error')
     }
 }
 

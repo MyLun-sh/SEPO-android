@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "com.sepo.certification"
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.sepo.certification"
