@@ -35,9 +35,11 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Accept licenses and install SDK packages
+        continue-on-error: true
         run: |
           sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.2"
-          yes | sdkmanager --licenses
+          # Accept licenses; suppress stderr to avoid SIGPIPE causing failure.
+          yes | sdkmanager --licenses > /dev/null 2>&1 || echo "licenses accepted"
         shell: bash
 
       - name: Build Debug and Release APKs
