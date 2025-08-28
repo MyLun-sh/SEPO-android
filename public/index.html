@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SEPO — Система сертифікації</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="shortcut icon" type="image/png" href="favicon.png">
+	<link rel="apple-touch-icon" href="favicon.png">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="ui-scale-85">
+	<!-- Вхід -->
+	<div id="login-card" class="card" style="max-width:400px;margin:100px auto">
+		<h2>Вхід в систему</h2>
+		<form id="login-form">
+			<div class="form-group">
+				<label>Email:</label>
+				<input type="email" id="email" required>
+			</div>
+			<div class="form-group">
+				<label>Пароль:</label>
+				<input type="password" id="password" required>
+			</div>
+			<button type="submit" class="btn">Увійти</button>
+		</form>
+	</div>
+
+	<!-- Область додатку -->
+	<div id="app-area" class="app-area">
+		<!-- Верхня панель -->
+		<div class="top">
+			<div class="brand">SEPO — Система сертифікації</div>
+			<div class="user-area">
+				<span id="user-info"></span>
+				<button id="logout" class="btn ghost">Вийти</button>
+			</div>
+		</div>
+
+		<div class="wrap">
+			<!-- Ліва навігація -->
+			<div class="left">
+				<button id="nav-create" class="btn">Створити заявку</button>
+				<button id="nav-my" class="btn">Мої заявки</button>
+				<button id="nav-all" class="btn">Усі заявки</button>
+                <button id="nav-ins" class="btn">Інспекції</button>
+                <button id="nav-ins-history" class="btn">Історія інспекцій</button>
+				<button id="nav-ins-pending" class="btn">Заявки на інспекцію</button>
+				<button id="nav-ins-planned" class="btn">Заплановані інспекції</button>
+				<button id="nav-logs" class="btn">Журнал дій</button>
+				<button id="nav-users" class="btn">Користувачі</button>
+			</div>
+
+			<!-- Основний контент -->
+			<div class="main">
+				<!-- Створення заявки -->
+				<div id="create-card" class="card">
+					<h3>Створити нову заявку</h3>
+					<form id="create-form">
+						<div class="form-group">
+							<label>Назва продукції:</label>
+							<input type="text" id="productName" required>
+						</div>
+						<div class="form-group">
+							<label>Тип продукції:</label>
+							<select id="productType" required>
+								<option value="одиничний">Одиничний виріб</option>
+								<option value="партія">Партія продукції</option>
+								<option value="серійна">Серійна продукція</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Хто ви:</label>
+							<select id="applicantType" required onchange="toggleOtherField()">
+								<option value="виробник">Виробник</option>
+								<option value="постачальник">Постачальник</option>
+								<option value="імпортер">Імпортер</option>
+								<option value="експортер">Експортер</option>
+								<option value="інше">Інше</option>
+							</select>
+						</div>
+						<div class="form-group" id="otherField" style="display: none;">
+							<label>Укажіть хто ви:</label>
+							<input type="text" id="otherApplicantType" placeholder="Введіть ваш тип">
+						</div>
+						<button type="submit" class="btn">Створити заявку</button>
+					</form>
+				</div>
+
+				<!-- Список заявок -->
+				<div id="list-card" class="card">
+					<h3>Заявки</h3>
+					<div id="apps"></div>
+				</div>
+
+				<!-- Деталі заявки -->
+				<div id="detail-card" class="card">
+					<div class="detail-top">
+						<div id="app-number"></div>
+						<div id="app-state" class="state"></div>
+					</div>
+					<div id="stepper" class="stepper"></div>
+					<div id="detail-content"></div>
+					<div id="actions" class="actions"></div>
+				</div>
+
+				<!-- Інспекції -->
+                <div id="ins-card" class="card">
+					<h3>Інспекції</h3>
+					<div id="ins-help" class="muted" style="margin-bottom:8px">Запланувати інспекцію для заявки</div>
+					<div class="form-group">
+						<label>Заявка ID:</label>
+						<input type="text" id="ins-app" placeholder="Введіть ID заявки" required>
+					</div>
+					                    <div class="form-group">
+                        <label>Дата проведення:</label>
+                        <input type="date" id="ins-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Місце проведення:</label>
+                        <input type="text" id="ins-place" placeholder="Введіть місце проведення" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Відповідальний:</label>
+                        <input type="text" id="ins-resp" placeholder="Введіть ПІБ відповідального" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Примітки:</label>
+                        <textarea id="ins-notes" placeholder="Додаткові зауваження" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип інспекції:</label>
+                        <select id="ins-type" required>
+                            <option value="">Виберіть тип</option>
+                            <option value="первинна">Первинна</option>
+                            <option value="повторна">Повторна</option>
+                            <option value="позапланова">Позапланова</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="ins-order"> Підписати наказ/розпорядження про проведення інспекції</label>
+                    </div>
+                    <button id="ins-create" class="btn">Запланувати інспекцію</button>
+					<div id="ins-list"></div>
+				</div>
+
+                <!-- Форма звіту інспекції -->
+                <div id="ins-report-card" class="card" style="display: none;">
+                    <h3>Акт інспекційної перевірки</h3>
+                    <form id="ins-report-form">
+                        <div class="form-group">
+                            <label>Дата проведення:</label>
+                            <input type="date" id="ins-report-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Місце проведення:</label>
+                            <input type="text" id="ins-report-place" placeholder="Адреса проведення" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Учасники:</label>
+                            <textarea id="ins-report-participants" placeholder="Список учасників перевірки" rows="2" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Результати перевірки:</label>
+                            <textarea id="ins-report-results" placeholder="Детальні результати" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Документи по інспекції:</label>
+                            <div class="evidence-upload-section">
+                                <div class="evidence-controls">
+                                    <input type="file" id="ins-report-evidence" accept="image/*,video/*,application/pdf" multiple style="display: none;">
+                                    <button type="button" id="pick-evidence-file" class="btn btn-outline">Обрати файл</button>
+                                    <span id="evidence-file-status" class="muted">Файл не обрано</span>
+                                </div>
+                                <div id="ins-report-evidence-list" class="evidence-list"></div>
+                                <div style="margin-top: 8px;">
+                                    <button type="button" id="ins-report-upload-evidence" class="btn">Завантажити файл</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Заключення:</label>
+                            <select id="ins-report-conclusion" required>
+                                <option value="">Виберіть результат</option>
+                                <option value="відповідає">Відповідає вимогам</option>
+                                <option value="не відповідає">Не відповідає вимогам</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Підпис інспектора:</label>
+                            <button type="button" id="ins-report-inspector-sign-btn" class="btn" style="background-color: #007bff;">Підписати інспекцію</button>
+                            <div id="ins-report-inspector-sign-status" class="muted" style="margin-top: 4px;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Підпис клієнта:</label>
+                            <input type="text" id="ins-report-client-sign" placeholder="ПІБ та підпис" required>
+                        </div>
+                        <button type="submit" class="btn">Зберегти акт</button>
+                        <button type="button" id="ins-report-cancel" class="btn ghost">Скасувати</button>
+                        <div style="margin-top: 16px; border-top: 1px solid #e0e0e0; padding-top: 16px;">
+                            <h4>Дії з інспекцією:</h4>
+                            <button type="button" id="conduct-inspection-btn" class="btn" style="background-color: #28a745;">Провести інспекцію</button>
+                            <button type="button" id="cancel-inspection-btn" class="btn" style="background-color: #dc3545;">Скасувати інспекцію</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Секція документів -->
+                <div id="documents-card" class="card" style="display: none;">
+                    <h3>Завантажені документи та докази</h3>
+                    <div id="documents-list" class="documents-list">
+                        <div class="muted">Тут будуть показані всі завантажені документи та докази</div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <button id="refresh-documents-btn" class="btn">Оновити список документів</button>
+                        <button id="back-to-report-btn" class="btn ghost">Повернутися до акту</button>
+                    </div>
+                </div>
+
+                <!-- Історія інспекцій (особистий список інспектора) -->
+                <div id="ins-history-card" class="card">
+                    <h3>Історія інспекцій (моя)</h3>
+                    <div id="ins-history-list"></div>
+                </div>
+
+				<!-- Очікувані інспекції -->
+				<div id="ins-pending-card" class="card">
+					<h3>Заявки на інспекцію</h3>
+					<div id="ins-pending-help" class="muted" style="margin-bottom:8px">Заявки, що очікують проведення інспекції (відсортовані за датою)</div>
+					<div id="ins-pending-list"></div>
+				</div>
+
+				<!-- Заплановані інспекції -->
+				<div id="ins-planned-card" class="card">
+					<h3>Заплановані інспекції</h3>
+					<div id="ins-planned-list"></div>
+				</div>
+
+				<!-- Журнал -->
+				<div id="logs-card" class="card">
+					<h3>Журнал дій</h3>
+					<div id="logs-area" class="pre"></div>
+					<div style="margin-top: 16px; text-align: right;">
+						<button id="clear-logs-btn" class="btn" style="background-color: #dc3545;">Очистити журнал дій</button>
+					</div>
+				</div>
+
+				<!-- Управління користувачами -->
+				<div id="users-card" class="card">
+					<h3>Управління користувачами</h3>
+					
+					<!-- Створити нового користувача -->
+					<div style="margin-bottom: 30px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+						<h4>Створити нового користувача</h4>
+						<form id="create-user-form">
+							<div class="form-group">
+								<label>ID користувача:</label>
+								<input type="text" id="new-user-id" placeholder="Наприклад: u-newuser" required>
+							</div>
+							<div class="form-group">
+								<label>Ім'я:</label>
+								<input type="text" id="new-user-name" required>
+							</div>
+							<div class="form-group">
+								<label>Email:</label>
+								<input type="email" id="new-user-email" required>
+							</div>
+							<div class="form-group">
+								<label>Пароль:</label>
+								<input type="password" id="new-user-password" required>
+							</div>
+							<div class="form-group">
+								<label>Роль:</label>
+								<select id="new-user-role" required>
+									<option value="applicant">Заявник</option>
+									<option value="operator">Оператор</option>
+									<option value="inspector">Інспектор</option>
+									<option value="admin">Адміністратор</option>
+								</select>
+							</div>
+							<button type="submit" class="btn">Створити користувача</button>
+						</form>
+					</div>
+
+					<!-- Список користувачів -->
+					<div>
+						<h4>Список користувачів</h4>
+						<div style="margin-bottom: 15px;">
+							<button onclick="loadUsers()" class="btn" style="background-color: #28a745;">🔄 Оновити список</button>
+						</div>
+						<div id="users-list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+			Система сертифікації продукції УкрСЕПРО
+		</div>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>

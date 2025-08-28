@@ -1,0 +1,33 @@
+{
+	"name": "sepo-certification-system",
+	"version": "1.0.0",
+	"description": "Система сертифікації продукції УкрСЕПРО",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"start": "node server.js",
+		"test": "node test_system.js",
+		"dev": "nodemon server.js"
+	},
+	"dependencies": {
+		"express": "^4.18.2",
+		"body-parser": "^1.20.2",
+		"multer": "^1.4.5-lts.1",
+		"uuid": "^9.0.0",
+		"pdfkit": "^0.13.0",
+		"cors": "^2.8.5",
+		"lowdb": "^1.0.0",
+		"node-fetch": "^3.3.2"
+	},
+	"devDependencies": {
+		"nodemon": "^3.0.1"
+	},
+	"keywords": [
+		"certification",
+		"ukraine",
+		"sepo",
+		"system"
+	],
+	"author": "SEPO Team",
+	"license": "MIT"
+}

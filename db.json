@@ -1,0 +1,47 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "name": "Адміністратор",
+      "email": "admin@example.com",
+      "password": "password",
+      "role": "admin",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": null
+    },
+    {
+      "id": "u-operator",
+      "name": "Оператор",
+      "email": "operator@example.com",
+      "password": "password",
+      "role": "operator",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": null
+    },
+    {
+      "id": "u-applicant",
+      "name": "Заявник",
+      "email": "applicant@example.com",
+      "password": "password",
+      "role": "applicant",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": null
+    },
+    {
+      "id": "u-inspector",
+      "name": "Інспектор",
+      "email": "inspector@example.com",
+      "password": "password",
+      "role": "inspector",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": null
+    }
+  ],
+  "tokens": [],
+  "applications": [],
+  "files": [],
+  "inspections": [],
+  "inspectionReports": [],
+  "logs": [],
+  "certificates": []
+}
