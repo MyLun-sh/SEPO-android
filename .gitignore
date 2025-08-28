@@ -1,4 +1,33 @@
-﻿node_modules/
+﻿# OS
+Thumbs.db
+.DS_Store
+
+# Node (if present)
+node_modules/
+
+# Android project
+android-app/.idea/
+android-app/.gradle/
+android-app/local.properties
+android-app/captures/
+android-app/.externalNativeBuild/
+android-app/.cxx/
+
+# Gradle (keep wrapper and gradle/ scripts tracked)
+android-app/build/
+android-app/app/build/
+
+# Keystores (do not commit real keys)
+**/*.keystore
+**/*.jks
+
+# Logs
+*.log
+
+# Misc
+uploads/
+public/*.map
+node_modules/
 uploads/
 certs/
 *.log
