@@ -48,11 +48,15 @@ jobs:
           chmod +x ./gradlew
           ./gradlew --no-daemon clean assembleDebug assembleRelease
 
+      - name: Rename Debug APK to sepo.apk
+        run: |
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk android-app/app/build/outputs/apk/debug/sepo.apk
+
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          name: sepo-apk
+          path: android-app/app/build/outputs/apk/debug/sepo.apk
 
       - name: Upload Release APK (unsigned)
         uses: actions/upload-artifact@v4
